@@ -130,7 +130,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                     headers: {
                         'Content-Type': '*/*',
                         Accept: '*/*',
-                        // Authorization: selectedEndpoint.security && selectedEndpoint.security.length > 0 && selectedEndpoint.security[0].apiKey ? `Bearer ${apiKey}` : `Basic ${token}`,
+                        Authorization: selectedEndpoint.security && selectedEndpoint.security.length > 0 && selectedEndpoint.security[0].apiKey ? `Bearer ${apiKey}` : `Basic ${token}`,
                         'x-api-key': apiKey,
                     },
                 }).then((res) => {
