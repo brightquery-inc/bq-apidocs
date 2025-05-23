@@ -1,5 +1,5 @@
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { get } from '../api/axios';
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { get } from "../api/axios";
 
 interface ApiSale {
   id: string;
@@ -7,7 +7,7 @@ interface ApiSale {
   revenue: number;
   calls: number;
   date: string;
-  status: 'active' | 'inactive';
+  status: "active" | "inactive";
 }
 
 interface ApiSalesStats {
@@ -24,9 +24,13 @@ interface ApiSalesContextType {
   fetchSales: () => Promise<void>;
 }
 
-const ApiSalesContext = createContext<ApiSalesContextType | undefined>(undefined);
+const ApiSalesContext = createContext<ApiSalesContextType | undefined>(
+  undefined
+);
 
-export const ApiSalesProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const ApiSalesProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [sales, setSales] = useState<ApiSale[]>([]);
   const [stats, setStats] = useState<ApiSalesStats>({
     totalRevenue: 0,
@@ -44,36 +48,36 @@ export const ApiSalesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       // For demo purposes, using mock data
       const mockSales: ApiSale[] = [
         {
-          id: '1',
-          apiName: 'Payment API',
+          id: "1",
+          apiName: "Payment API",
           revenue: 5000,
           calls: 10000,
-          date: '2024-03-15',
-          status: 'active',
+          date: "2024-03-15",
+          status: "active",
         },
         {
-          id: '2',
-          apiName: 'Authentication API',
+          id: "2",
+          apiName: "Authentication API",
           revenue: 3000,
           calls: 8000,
-          date: '2024-03-15',
-          status: 'active',
+          date: "2024-03-15",
+          status: "active",
         },
         {
-          id: '3',
-          apiName: 'Data Analytics API',
+          id: "3",
+          apiName: "Data Analytics API",
           revenue: 7000,
           calls: 15000,
-          date: '2024-03-15',
-          status: 'active',
+          date: "2024-03-15",
+          status: "active",
         },
         {
-          id: '4',
-          apiName: 'Legacy API',
+          id: "4",
+          apiName: "Legacy API",
           revenue: 1000,
           calls: 2000,
-          date: '2024-03-15',
-          status: 'inactive',
+          date: "2024-03-15",
+          status: "inactive",
         },
       ];
 
@@ -84,7 +88,7 @@ export const ApiSalesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
         (acc, sale) => ({
           totalRevenue: acc.totalRevenue + sale.revenue,
           totalCalls: acc.totalCalls + sale.calls,
-          activeApis: acc.activeApis + (sale.status === 'active' ? 1 : 0),
+          activeApis: acc.activeApis + (sale.status === "active" ? 1 : 0),
         }),
         { totalRevenue: 0, totalCalls: 0, activeApis: 0 }
       );
@@ -92,7 +96,7 @@ export const ApiSalesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       setStats(newStats);
       setError(null);
     } catch (err) {
-      setError('Failed to fetch sales data');
+      setError("Failed to fetch sales data");
     } finally {
       setLoading(false);
     }
@@ -103,16 +107,18 @@ export const ApiSalesProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, []);
 
   return (
-    <ApiSalesContext.Provider value={{ sales, stats, loading, error, fetchSales }}>
+    <ApiSalesContext.Provider
+      value={{ sales, stats, loading, error, fetchSales }}
+    >
       {children}
     </ApiSalesContext.Provider>
   );
 };
 
-export const useApiSales = () => {
-  const context = useContext(ApiSalesContext);
-  if (context === undefined) {
-    throw new Error('useApiSales must be used within an ApiSalesProvider');
-  }
-  return context;
-}; 
+// export const useApiSales = () => {
+//   const context = useContext(ApiSalesContext);
+//   if (context === undefined) {
+//     throw new Error('useApiSales must be used within an ApiSalesProvider');
+//   }
+//   return context;
+// };
