@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   AppBar,
   Box,
@@ -16,7 +16,7 @@ import {
   ListItem,
   ListItemText,
   ListItemIcon,
-} from '@mui/material';
+} from "@mui/material";
 import {
   Menu as MenuIcon,
   Dashboard,
@@ -24,20 +24,20 @@ import {
   Settings,
   Logout,
   Article,
-} from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
-import logo from 'logo.svg';
+} from "@mui/icons-material";
+import { useNavigate } from "react-router-dom";
+import logo from "logo.svg";
 
 const pages = [
-  { title: 'Dashboard', path: '/dashboard', icon: <Dashboard /> },
-  { title: 'Pricing', path: '/reports', icon: <Article /> },
-  { title: 'Balance', path: '/reports', icon: <Article /> },
-  { title: 'Reports', path: '/reports', icon: <Article /> },
+  { title: "Dashboard", path: "/dashboard", icon: <Dashboard /> },
+  { title: "Pricing", path: "/reports", icon: <Article /> },
+  { title: "Balance", path: "/reports", icon: <Article /> },
+  { title: "Reports", path: "/reports", icon: <Article /> },
 ];
 
 const settings = [
-  { title: 'Profile', path: '/profile', icon: <Person /> },
-  { title: 'Settings', path: '/settings', icon: <Settings /> },
+  { title: "Profile", path: "/profile", icon: <Person /> },
+  { title: "Settings", path: "/settings", icon: <Settings /> },
 ];
 
 const Header: React.FC = () => {
@@ -61,15 +61,15 @@ const Header: React.FC = () => {
     // Clear local storage
     localStorage.clear();
     // Redirect to login
-    navigate('/login');
+    navigate("/login");
   };
 
   const drawer = (
     <Box sx={{ width: 250 }} role="presentation">
       <List>
         {pages.map((page) => (
-          <ListItem 
-            key={page.title} 
+          <ListItem
+            key={page.title}
             onClick={() => {
               navigate(page.path);
               handleDrawerToggle();
@@ -84,11 +84,11 @@ const Header: React.FC = () => {
   );
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: '#074481' }}>
+    <AppBar position="static" sx={{ backgroundColor: "#074481" }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           {/* Mobile Menu Icon */}
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+          <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="menu"
@@ -107,24 +107,33 @@ const Header: React.FC = () => {
             href="/"
             sx={{
               mr: 2,
-              display: 'flex',
-              fontFamily: 'monospace',
+              display: "flex",
               fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
             }}
           >
-            <img src={logo} alt="BrightQuery" style={{ width: '32px', height: '32px' }} />
+            <img
+              src={logo}
+              alt="BrightQuery"
+              sx={{ width: "auto", height: "50px" }}
+            />
           </Typography>
 
           {/* Desktop Navigation */}
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
               <Button
                 key={page.title}
                 onClick={() => navigate(page.path)}
-                sx={{ my: 2, color: 'white', display: 'flex', alignItems: 'center', gap: 1 }}
+                sx={{
+                  my: 2,
+                  color: "white",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 1,
+                }}
                 startIcon={page.icon}
               >
                 {page.title}
@@ -136,23 +145,25 @@ const Header: React.FC = () => {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="User" src="/static/images/avatar/2.jpg" 
-                style={{ backgroundColor: '#074481' }}
+                <Avatar
+                  alt="User"
+                  src="/static/images/avatar/2.jpg"
+                  style={{ backgroundColor: "#002265" }}
                 />
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: '45px' }}
+              sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
@@ -190,8 +201,8 @@ const Header: React.FC = () => {
           keepMounted: true, // Better open performance on mobile.
         }}
         sx={{
-          display: { xs: 'block', md: 'none' },
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 250 },
+          display: { xs: "block", md: "none" },
+          "& .MuiDrawer-paper": { boxSizing: "border-box", width: 250 },
         }}
       >
         {drawer}
@@ -200,4 +211,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default Header; 
+export default Header;
