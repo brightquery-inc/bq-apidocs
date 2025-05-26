@@ -60,3 +60,15 @@
 .txtError span {
   font-size: 11px !important;
 }
+.iconView {
+  line-height: 1.9;
+}
+.iconView svg {
+  font-size: 22px;
+}
+.iconView svg:hover {
+  background: #1976d2;
+  padding: 3px;
+  border-radius: 20px;
+  color: #fff;
+}

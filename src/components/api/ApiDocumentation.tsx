@@ -16,7 +16,7 @@ import {
   Chip,
   MenuItem,
   Select,
-  InputLabel
+  InputLabel,
 } from "@mui/material";
 import {
   Search as SearchIcon,
@@ -138,7 +138,12 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
           headers: {
             "Content-Type": "*/*",
             Accept: "*/*",
-            Authorization: selectedEndpoint.security && selectedEndpoint.security.length > 0 && selectedEndpoint.security[0].apiKey ? `Bearer ${apiKey}` : `Basic ${token}`,
+            Authorization:
+              selectedEndpoint.security &&
+              selectedEndpoint.security.length > 0 &&
+              selectedEndpoint.security[0].apiKey
+                ? `Bearer ${apiKey}`
+                : `Basic ${token}`,
             "x-api-key": apiKey,
           },
         })
@@ -627,45 +632,56 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                       {selectedEndpoint.example &&
                         selectedEndpoint.example.length > 0 && (
                           <Box>
-                            <InputLabel sx={{ color: '#fff' }}>Example</InputLabel>
+                            <InputLabel sx={{ color: "#fff" }}>
+                              Example
+                            </InputLabel>
                             <Select
                               fullWidth
-                              value={selectedExample || ''}
-                              onChange={(e) => setSelectedExample(e.target.value)}
+                              value={selectedExample || ""}
+                              onChange={(e) =>
+                                setSelectedExample(e.target.value)
+                              }
                               label="Example"
-                              sx={{ color: '#fff' }}
+                              sx={{
+                                color: "#fff",
+                                border: "solid 1px #fff",
+                                marginTop: "10px",
+                              }}
                             >
-                              
-                            {selectedEndpoint.example?.map((example: any) => (  
+                              {selectedEndpoint.example?.map((example: any) => (
                                 <MenuItem
                                   key={example.scenario}
                                   value={example.scenario}
                                 >
                                   {example.scenario}
                                 </MenuItem>
-                              
-                            ))}
+                              ))}
                             </Select>
                             <Box
-                          sx={{
-                            mt:2,
-                            p: 1,
-                            bgcolor: "grey.100",
-                            borderRadius: 1,
-                            fontFamily: "monospace",
-                            fontSize: "0.875rem",
-                            whiteSpace: "pre-wrap",
-                            wordBreak: "break-word",
-                            maxHeight: 300,
-                            overflow: "auto",
-                          }}
-                        >
-                            <JsonView
-                            src={selectedEndpoint.example.find((ex: any) => ex.scenario === selectedExample)?.parameters}
-                            displaySize={"collapsed"}
-                            editable
-                            enableClipboard={true}
-                            />
+                              sx={{
+                                mt: 2,
+                                p: 1,
+                                bgcolor: "grey.100",
+                                borderRadius: 1,
+                                fontFamily: "monospace",
+                                fontSize: "0.875rem",
+                                whiteSpace: "pre-wrap",
+                                wordBreak: "break-word",
+                                maxHeight: 300,
+                                overflow: "auto",
+                              }}
+                            >
+                              <JsonView
+                                className="iconView"
+                                src={
+                                  selectedEndpoint.example.find(
+                                    (ex: any) => ex.scenario === selectedExample
+                                  )?.parameters
+                                }
+                                displaySize={"collapsed"}
+                                editable
+                                enableClipboard={true}
+                              />
                             </Box>
                           </Box>
                         )}
@@ -687,7 +703,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                                 <TextField
                                   fullWidth
                                   label={param.name}
-                                  placeholder={param.schema?.type || "string"}                                
+                                  placeholder={param.schema?.type || "string"}
                                   value={paramValues[param.name] || ""}
                                   onChange={(e) =>
                                     setParamValues((prev) => ({
