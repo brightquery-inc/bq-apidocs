@@ -686,7 +686,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                           </Box>
                         )}
 
-                      {selectedEndpoint.parameters &&
+                      {/* {selectedEndpoint.parameters &&
                         selectedEndpoint.parameters.length > 0 && (
                           <Box>
                             <Typography
@@ -750,7 +750,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                               </Box>
                             ))}
                           </Box>
-                        )}
+                        )} */}
                       {selectedEndpoint.requestBody && (
                         <Box sx={{ mt: 2 }}>
                           <Typography
