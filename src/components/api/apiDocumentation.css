@@ -1,0 +1,62 @@
+.custom-search-input .MuiOutlinedInput-root {
+  border-radius: 40px;
+}
+
+.custom-search-input .MuiOutlinedInput-root input {
+  padding: 10px 15px 10px 0px;
+}
+
+.custom-search-input .MuiOutlinedInput-notchedOutline {
+  border-color: #ccc;
+}
+.custom-listButton .MuiChip-filled {
+  font-size: 10px;
+  padding: 4px 5px;
+  height: auto;
+}
+.customParagraph {
+  font-weight: 500 !important;
+  color: #333;
+}
+.customeAppendCnt .MuiChip-filledPrimary {
+  font-size: 10px;
+  padding: 6px 8px;
+  height: auto;
+}
+.customeAppendCnt .MuiChip-filledSuccess {
+  font-size: 10px;
+  padding: 4px 5px;
+  height: auto;
+}
+.customeAppendCnt .MuiChip-filledError {
+  font-size: 10px;
+  padding: 4px 5px;
+  height: auto;
+}
+.txtlogin {
+  font-size: 12px !important;
+  padding: 5px 8x !important;
+}
+.customeAppendCnt h6 {
+  font-size: 14px;
+  color: #868686;
+}
+.customeAppendCnt h4 {
+  font-size: 20px;
+  font-weight: 400;
+  margin-top: 30px;
+  color: #333;
+}
+.customeAppendCnt h5 {
+  font-size: 16px;
+  font-weight: 400;
+  color: #333;
+}
+.customeAppendCnt p {
+  font-size: 15px;
+  font-weight: 400;
+  color: #333;
+}
+.txtError span {
+  font-size: 11px !important;
+}
