@@ -25,6 +25,8 @@ import JsonView from "react18-json-view";
 import "react18-json-view/src/style.css";
 import { Accordion, AccordionSummary, AccordionDetails } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import "./apiDocumentation.css";
+import "./../../style.css";
 
 interface ApiDocumentationProps {
   spec: any; // OpenAPI spec object
@@ -171,19 +173,20 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
         sx={{
           display: "flex",
           flexDirection: {
-            xs: "row", // Stack vertically on mobile
-            sm: "row", // Side-by-side from small screens
+            xs: "column", // Stack vertically on mobile
+            sm: "column", // Side-by-side from small screens
           },
           height: {
             xs: "auto",
-            sm: "calc(100vh - 64px)",
+            sm: "calc(100vh - 10px)",
           },
           width: {
             xs: "100%",
             sm: "25%",
             md: "20%",
           },
-          mt: "64px",
+          mt: "10px",
+          borderRight: " solid 1px #ccc",
         }}
       >
         <Box
@@ -196,6 +199,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
           }}
         >
           <TextField
+            className="custom-search-input"
             fullWidth
             variant="outlined"
             placeholder="Search APIs..."
@@ -220,8 +224,10 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                   selectedEndpoint?.method === endpoint.method
                 }
                 onClick={() => handleEndpointClick(endpoint)}
+                sx={{ cursor: "pointer" }}
               >
                 <ListItemText
+                  className="custom-listButton"
                   primary={
                     <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                       <Chip
@@ -239,7 +245,11 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                             : "default"
                         }
                       />
-                      <Typography variant="body2" noWrap>
+                      <Typography
+                        variant="body2"
+                        className="customParagraph"
+                        noWrap
+                      >
                         {endpoint.path}
                       </Typography>
                     </Box>
@@ -267,7 +277,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
         }}
       >
         {selectedEndpoint ? (
-          <Box sx={{ p: 3 }}>
+          <Box sx={{ p: 3 }} className="customeAppendCnt">
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
               <Chip
                 label={selectedEndpoint.method}
@@ -286,7 +296,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
               <Typography variant="h6">{selectedEndpoint.path}</Typography>
             </Box>
 
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h4" gutterBottom>
               {selectedEndpoint.summary}
             </Typography>
 
@@ -299,7 +309,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
             {selectedEndpoint.parameters &&
               selectedEndpoint.parameters.length > 0 && (
                 <Box sx={{ mt: 3 }}>
-                  <Typography variant="h6" gutterBottom>
+                  <Typography variant="h5" gutterBottom>
                     Parameters
                   </Typography>
                   <Box>
@@ -458,7 +468,8 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                     mb: 2,
                     border: "1px solid #6C757D",
                     borderRadius: "8px",
-                    p: 1,
+                    p: 2,
+                    pb: 1,
                     backgroundColor: "#3e4c59",
                   }}
                 >
@@ -485,11 +496,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon sx={{ color: "#fff" }} />}
                   >
-                    <Typography
-                      sx={{ color: "#fff" }}
-                      variant="subtitle2"
-                      gutterBottom
-                    >
+                    <Typography gutterBottom sx={{ color: "#fff" }}>
                       Authentication
                     </Typography>
                   </AccordionSummary>
@@ -526,9 +533,10 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                         />
                       </Box>
                     ) : (
-                      <Box sx={{ mb: 2 }}>
+                      <Box sx={{ mt: 2 }}>
                         <TextField
                           fullWidth
+                          className="txtlogin"
                           label="Username"
                           value={userName}
                           onChange={(e) => setUserName(e.target.value)}
@@ -554,6 +562,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                           }}
                         />
                         <TextField
+                          className="txtlogin"
                           fullWidth
                           label="Password"
                           value={password}
@@ -607,7 +616,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                       Request
                     </Typography>
                   </AccordionSummary>
-                  <AccordionDetails>
+                  <AccordionDetails sx={{ p: 0 }}>
                     <Paper
                       variant="outlined"
                       sx={{
@@ -710,7 +719,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                       variant="contained"
                       endIcon={<SendIcon />}
                       onClick={handleTryIt}
-                      sx={{ mb: 2 }}
+                      sx={{ m: 2, width: "90%", boxShadow: "none" }}
                       disabled={isPending}
                     >
                       {isPending ? "Executing..." : "Execute"}
