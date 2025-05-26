@@ -14,6 +14,9 @@ import {
   Card,
   CardContent,
   Chip,
+  MenuItem,
+  Select,
+  InputLabel
 } from "@mui/material";
 import {
   Search as SearchIcon,
@@ -41,6 +44,7 @@ interface ApiEndpoint {
   requestBody?: any;
   responses?: any;
   security?: any[];
+  example?: any[];
 }
 
 const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
@@ -55,6 +59,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
   const [password, setPassword] = useState<string>("");
   const [apiKey, setApiKey] = useState<string>("");
   const [isPending, startTransition] = useTransition();
+  const [selectedExample, setSelectedExample] = useState<string>("");
 
   // Extract all endpoints from the spec
   const endpoints = useMemo(() => {
@@ -617,6 +622,54 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                         mb: 2,
                       }}
                     >
+                      {console.log(selectedEndpoint)}
+
+                      {selectedEndpoint.example &&
+                        selectedEndpoint.example.length > 0 && (
+                          <Box>
+                            <InputLabel sx={{ color: '#fff' }}>Example</InputLabel>
+                            <Select
+                              fullWidth
+                              value={selectedExample || ''}
+                              onChange={(e) => setSelectedExample(e.target.value)}
+                              label="Example"
+                              sx={{ color: '#fff' }}
+                            >
+                              
+                            {selectedEndpoint.example?.map((example: any) => (  
+                                <MenuItem
+                                  key={example.scenario}
+                                  value={example.scenario}
+                                >
+                                  {example.scenario}
+                                </MenuItem>
+                              
+                            ))}
+                            </Select>
+                            <Box
+                          sx={{
+                            mt:2,
+                            p: 1,
+                            bgcolor: "grey.100",
+                            borderRadius: 1,
+                            fontFamily: "monospace",
+                            fontSize: "0.875rem",
+                            whiteSpace: "pre-wrap",
+                            wordBreak: "break-word",
+                            maxHeight: 300,
+                            overflow: "auto",
+                          }}
+                        >
+                            <JsonView
+                            src={selectedEndpoint.example.find((ex: any) => ex.scenario === selectedExample)?.parameters}
+                            displaySize={"collapsed"}
+                            editable
+                            enableClipboard={true}
+                            />
+                            </Box>
+                          </Box>
+                        )}
+
                       {selectedEndpoint.parameters &&
                         selectedEndpoint.parameters.length > 0 && (
                           <Box>
@@ -634,8 +687,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                                 <TextField
                                   fullWidth
                                   label={param.name}
-                                  placeholder={param.schema?.type || "string"}
-                                  helperText={param.description}
+                                  placeholder={param.schema?.type || "string"}                                
                                   value={paramValues[param.name] || ""}
                                   onChange={(e) =>
                                     setParamValues((prev) => ({
@@ -718,7 +770,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                       sx={{ m: 2, width: "90%", boxShadow: "none" }}
                       disabled={isPending}
                     >
-                      {isPending ? "Executing..." : "Execute"}
+                      {isPending ? "Sending..." : "Send"}
                     </Button>
                   </AccordionDetails>
                 </Accordion>

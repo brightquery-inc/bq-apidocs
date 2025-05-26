@@ -34,6 +34,31 @@ const spec ={
                             "basicAuth": []
                         }
                     ],
+                    
+                    "example":[
+                      {
+                        "scenario": "Name + Address",
+                        "parameters": {
+                          "company_name": "Flower",
+                          "address": "123 Main St, Anytown, USA"
+                        }
+                      },
+                      {
+                        "scenario": "Name + Website",
+                        "parameters": {
+                          "company_name": "Flower",
+                          "website": "www.flowersfoods.com"
+                        }
+                      },
+                      {
+                        "scenario": "Name + Address + Website",
+                        "parameters": {
+                          "company_name": "Flower",
+                          "address": "123 Main St, Anytown, USA",
+                          "website": "www.flowersfoods.com"
+                        }
+                      }
+                    ],
                     "parameters": [
                         {
                             "name": "company_name",
