@@ -23,6 +23,20 @@
   padding: 6px 8px;
   height: auto;
 }
+.customeAppendCnt .MuiChip-filledSuccess {
+  font-size: 10px;
+  padding: 4px 5px;
+  height: auto;
+}
+.customeAppendCnt .MuiChip-filledError {
+  font-size: 10px;
+  padding: 4px 5px;
+  height: auto;
+}
+.txtlogin {
+  font-size: 12px !important;
+  padding: 5px 8x !important;
+}
 .customeAppendCnt h6 {
   font-size: 14px;
   color: #868686;
@@ -42,4 +56,7 @@
   font-size: 15px;
   font-weight: 400;
   color: #333;
+}
+.txtError span {
+  font-size: 11px !important;
 }

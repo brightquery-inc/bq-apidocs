@@ -161,6 +161,8 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
   return (
     <Box
       sx={{
+        position: "sticky",
+        top: "0",
         display: "flex",
         height: "calc(100vh - 64px)",
         width: "100%",
@@ -269,8 +271,8 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
         sx={{
           width: {
             xs: "100%",
-            sm: "50%",
-            md: "60%",
+            sm: "40%",
+            md: "50%",
           },
           //   minWidth: "60%",
           overflow: "auto",
@@ -313,13 +315,11 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                     Parameters
                   </Typography>
                   <Box>
-                    <Grid container>
+                    <Grid container className="gridBorderHdr">
                       <Grid
                         size={5}
                         sx={{
-                          backgroundColor: "#f8f9fa",
                           padding: 1,
-                          border: "1px solid #6C757D",
                         }}
                       >
                         <Typography variant="body2" fontWeight={700}>
@@ -329,9 +329,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                       <Grid
                         size={3}
                         sx={{
-                          backgroundColor: "#f8f9fa",
                           padding: 1,
-                          border: "1px solid #6C757D",
                         }}
                       >
                         <Typography variant="body2" fontWeight={700}>
@@ -341,9 +339,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                       <Grid
                         size={4}
                         sx={{
-                          backgroundColor: "#f8f9fa",
                           padding: 1,
-                          border: "1px solid #6C757D",
                         }}
                       >
                         <Typography variant="body2" fontWeight={700}>
@@ -352,22 +348,18 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                       </Grid>
                     </Grid>
                     {selectedEndpoint.parameters.map((param: any) => (
-                      <Grid container>
+                      <Grid container className="gridBorderCell">
                         <Grid
                           size={5}
                           sx={{
                             p: 1,
-                            borderLeft: "1px solid #6C757D",
-                            borderRight: "1px solid #6C757D",
-                            borderBottom: "1px solid #6C757D",
                           }}
                         >
-                          <Typography
-                            sx={{ color: "#d63384", fontSize: ".875em" }}
-                          >
+                          <Typography sx={{ color: "#d63384", fontSize: "" }}>
                             {param.name}
                             {param.required && (
                               <Chip
+                                className="txtError"
                                 label="Required"
                                 size="small"
                                 color="error"
@@ -380,9 +372,6 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                           size={3}
                           sx={{
                             p: 1,
-                            borderLeft: "1px solid #6C757D",
-                            borderRight: "1px solid #6C757D",
-                            borderBottom: "1px solid #6C757D",
                           }}
                         >
                           <Typography variant="body2">
@@ -393,9 +382,6 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                           size={4}
                           sx={{
                             p: 1,
-                            borderLeft: "1px solid #6C757D",
-                            borderRight: "1px solid #6C757D",
-                            borderBottom: "1px solid #6C757D",
                           }}
                         >
                           <Typography variant="body2">
@@ -450,16 +436,15 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
         sx={{
           width: {
             xs: "100%",
-            sm: "25%",
-            md: "20%",
+            sm: "35%",
+            md: "30%",
           },
           //   minWidth: "30%",
           overflow: "auto",
-          backgroundColor: "#323F4B",
           borderRadius: "12px",
         }}
       >
-        <Box sx={{ p: 3 }}>
+        <Box sx={{ p: 2 }}>
           {selectedEndpoint && (
             <>
               <Box sx={{ mb: 3 }}>
@@ -484,13 +469,10 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                 </Box>
                 <Accordion
                   sx={{
-                    borderTopLeftRadius: "8px",
-                    borderTopRightRadius: "8px",
+                    borderRadius: "8px",
                     border: "1px solid #6C757D",
                     backgroundColor: "#3e4c59",
-                    "&.Mui-expanded": {
-                      margin: 0,
-                    },
+                    mb: "2",
                   }}
                 >
                   <AccordionSummary
@@ -500,32 +482,37 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                       Authentication
                     </Typography>
                   </AccordionSummary>
-                  <AccordionDetails>
+                  <AccordionDetails sx={{ backgroundColor: "#52606D" }}>
                     {selectedEndpoint.security &&
                     selectedEndpoint.security.length > 0 &&
                     selectedEndpoint.security[0].apiKey ? (
-                      <Box sx={{ mb: 2 }}>
+                      <Box sx={{ mt: 2, mb: 1 }}>
                         <TextField
                           fullWidth
                           label="API Key"
                           value={apiKey}
                           onChange={(e) => setApiKey(e.target.value)}
                           sx={{
+                            mt2: 1,
                             mb: 2,
+                            fontSize: "12px !important",
                             "& .MuiInputBase-root": {
                               color: "#fff",
                             },
-                            "& label .Mui-focused": {
+                            "& label.Mui-focused": {
                               color: "#fff",
                             },
                             "& .MuiInputLabel-root": {
                               color: "#fff",
                             },
-                            "& .MuiInputLabel-shrink": {
-                              color: "#fff",
-                            },
                             "& .MuiOutlinedInput-root": {
-                              "&.MuiInputBase-root fieldset": {
+                              "& fieldset": {
+                                borderColor: "white",
+                              },
+                              "&:hover fieldset": {
+                                borderColor: "white",
+                              },
+                              "&.Mui-focused fieldset": {
                                 borderColor: "white",
                               },
                             },
@@ -544,18 +531,25 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                             mb: 2,
                             "& .MuiInputBase-root": {
                               color: "#fff",
+                              fontSize: "0.85rem", // Reduced input text size
                             },
-                            "& label .Mui-focused": {
+                            "& input::placeholder": {
+                              fontSize: "9px !important", // Reduced placeholder size
+                            },
+                            "& label.Mui-focused": {
                               color: "#fff",
                             },
                             "& .MuiInputLabel-root": {
                               color: "#fff",
                             },
-                            "& .MuiInputLabel-shrink": {
-                              color: "#fff",
-                            },
                             "& .MuiOutlinedInput-root": {
-                              "&.MuiInputBase-root fieldset": {
+                              "& fieldset": {
+                                borderColor: "white",
+                              },
+                              "&:hover fieldset": {
+                                borderColor: "white",
+                              },
+                              "&.Mui-focused fieldset": {
                                 borderColor: "white",
                               },
                             },
@@ -573,17 +567,20 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                             "& .MuiInputBase-root": {
                               color: "#fff",
                             },
-                            "& label .Mui-focused": {
+                            "& label.Mui-focused": {
                               color: "#fff",
                             },
                             "& .MuiInputLabel-root": {
                               color: "#fff",
                             },
-                            "& .MuiInputLabel-shrink": {
-                              color: "#fff",
-                            },
                             "& .MuiOutlinedInput-root": {
-                              "&.MuiInputBase-root fieldset": {
+                              "& fieldset": {
+                                borderColor: "white",
+                              },
+                              "&:hover fieldset": {
+                                borderColor: "white",
+                              },
+                              "&.Mui-focused fieldset": {
                                 borderColor: "white",
                               },
                             },
@@ -595,14 +592,9 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                 </Accordion>
                 <Accordion
                   sx={{
-                    borderBottom: "1px solid",
-                    borderLeft: "1px solid",
-                    borderRight: "1px solid",
-                    borderColor: "#6C757D",
+                    my: 2,
+                    borderRadius: "8px",
                     backgroundColor: "#3e4c59",
-                    "&.Mui-expanded": {
-                      margin: 0,
-                    },
                   }}
                 >
                   <AccordionSummary
@@ -627,19 +619,19 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                     >
                       {selectedEndpoint.parameters &&
                         selectedEndpoint.parameters.length > 0 && (
-                          <Box sx={{ mt: 2 }}>
+                          <Box>
                             <Typography
                               variant="caption"
                               color="#fff"
                               display="block"
                               gutterBottom
+                              sx={{ my: 2 }}
                             >
                               Query Parameters
                             </Typography>
                             {selectedEndpoint.parameters.map((param: any) => (
                               <Box key={param.name} sx={{ mb: 1 }}>
                                 <TextField
-                                  size="small"
                                   fullWidth
                                   label={param.name}
                                   placeholder={param.schema?.type || "string"}
@@ -655,6 +647,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                                     endAdornment: param.required && (
                                       <InputAdornment position="end">
                                         <Chip
+                                          className="txtError"
                                           label="Required"
                                           size="small"
                                           color="error"
@@ -667,17 +660,20 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                                     "& .MuiInputBase-root": {
                                       color: "#fff",
                                     },
-                                    "& label .Mui-focused": {
+                                    "& label.Mui-focused": {
                                       color: "#fff",
                                     },
                                     "& .MuiInputLabel-root": {
                                       color: "#fff",
                                     },
-                                    "& .MuiInputLabel-shrink": {
-                                      color: "#fff",
-                                    },
                                     "& .MuiOutlinedInput-root": {
-                                      "&.MuiInputBase-root fieldset": {
+                                      "& fieldset": {
+                                        borderColor: "white",
+                                      },
+                                      "&:hover fieldset": {
+                                        borderColor: "white",
+                                      },
+                                      "&.Mui-focused fieldset": {
                                         borderColor: "white",
                                       },
                                     },
@@ -729,14 +725,8 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                 {response && (
                   <Accordion
                     sx={{
-                      borderBottom: "1px solid",
-                      borderLeft: "1px solid",
-                      borderRight: "1px solid",
-                      borderColor: "#6C757D",
+                      borderRadius: "8px",
                       backgroundColor: "#3e4c59",
-                      "&.Mui-expanded": {
-                        margin: 0,
-                      },
                     }}
                   >
                     <AccordionSummary
@@ -750,12 +740,13 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                         Response
                       </Typography>
                     </AccordionSummary>
-                    <AccordionDetails>
+                    <AccordionDetails sx={{ p: 0 }}>
                       <Paper
                         variant="outlined"
                         sx={{
                           p: 2,
-                          bgcolor: "background.default",
+                          bgcolor: "#52606D",
+                          mb: 2,
                         }}
                       >
                         <Box sx={{ mb: 1 }}>

@@ -148,7 +148,7 @@ const Header: React.FC = () => {
                 <Avatar
                   alt="User"
                   src="/static/images/avatar/2.jpg"
-                  style={{ backgroundColor: "#074481" }}
+                  style={{ backgroundColor: "#002265" }}
                 />
               </IconButton>
             </Tooltip>
