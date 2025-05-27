@@ -43,7 +43,7 @@ const Footer: React.FC = () => {
       sx={{
         bgcolor: 'primary.main',
         color: 'white',
-        py: '10px',
+        pb: '10px',
         mt: '10px',
       }}
     >
@@ -56,7 +56,10 @@ const Footer: React.FC = () => {
           align="center"
           sx={{ mt: 1, borderTop: '1px solid rgba(255, 255, 255, 0.1)', pt: 1 }}
         >
-          © {new Date().getFullYear()} BQAPI. All rights reserved.
+          © {new Date().getFullYear()}  BrightQuery, Inc. All rights reserved. |  
+          <Link href="mailto:support@brightquery.com" sx={{color: 'white'}}> support@brightquery.com</Link> | 
+          <Link href="https://brightquery.com/terms-of-use/" sx={{color: 'white'}}> Terms of Use</Link>
+
         </Typography>
       </Container>
     </Box>
