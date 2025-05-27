@@ -60,9 +60,11 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
   const [apiKey, setApiKey] = useState<string>("");
   const [isPending, startTransition] = useTransition();
   const [selectedExample, setSelectedExample] = useState<string>("");
-  const [expandRequestAccordion, setExpandRequestAccordion] = useState<boolean>(true);
-  const [expandResponseAccordion, setExpandResponseAccordion] = useState<boolean>(true);
-  
+  const [expandRequestAccordion, setExpandRequestAccordion] =
+    useState<boolean>(true);
+  const [expandResponseAccordion, setExpandResponseAccordion] =
+    useState<boolean>(true);
+
   // Extract all endpoints from the spec
   const endpoints = useMemo(() => {
     const result: ApiEndpoint[] = [];
@@ -116,7 +118,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
 
   const handleTryIt = async () => {
     if (!selectedEndpoint) return;
-   
+
     try {
       startTransition(async () => {
         // Build query parameters
@@ -624,7 +626,6 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                 >
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon sx={{ color: "#fff" }} />}
-                    
                   >
                     <Typography
                       variant="subtitle2"
@@ -643,8 +644,6 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                         mb: 2,
                       }}
                     >
-                     
-
                       {selectedEndpoint.example &&
                         selectedEndpoint.example.length > 0 && (
                           <Box>
@@ -662,9 +661,11 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                                 color: "#fff",
                                 border: "solid 1px #fff",
                                 marginTop: "10px",
+                                "& .MuiSelect-icon": {
+                                  color: "#fff",
+                                },
                               }}
                             >
-                          
                               {selectedEndpoint.example?.map((example: any) => (
                                 <MenuItem
                                   key={example.scenario}
