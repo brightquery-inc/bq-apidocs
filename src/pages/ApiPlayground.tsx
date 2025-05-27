@@ -37,10 +37,9 @@ const spec ={
                     
                     "example":[
                       {
-                        "scenario": "Name + Address",
+                        "scenario": "Name only",
                         "parameters": {
-                          "company_name": "Flower",
-                          "address": "123 Main St, Anytown, USA"
+                          "company_name": "Flower"
                         }
                       },
                       {
