@@ -133,6 +133,14 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
           }
         });
 
+         selectedEndpoint.example?.forEach((example: any) => {
+          if (example.scenario === selectedExample) {
+            data = example.parameters;
+          }
+          Object.entries(data).forEach(([key, value]) => {
+            queryParams.append(key, String(value));
+          });
+         });
         // Here you would make the actual API call
         // For now, we'll just simulate a response
 
@@ -164,6 +172,8 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
           .then((res) => {
             if (res.status === 200) {
               setResponse(res.data);
+              setExpandRequestAccordion(false);
+              setExpandResponseAccordion(true);
             }
           })
           .catch((err) => {
@@ -172,10 +182,12 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
               status: err.status,
               error: err.message,
             });
+            setExpandRequestAccordion(false);
+            setExpandResponseAccordion(true);
           });
+                    
+     
       });
-      setExpandRequestAccordion(false);
-      setExpandResponseAccordion(true);
     } catch (err) {
       setResponse({
         status: 500,
@@ -618,7 +630,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                 </Accordion>
                 <Accordion
                   expanded={expandRequestAccordion}
-                  onClick={() => setExpandRequestAccordion(!expandRequestAccordion)}
+                  
                   sx={{
                     my: 2,
                     borderRadius: "8px",
@@ -627,6 +639,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                 >
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon sx={{ color: "#fff" }} />}
+                    onClick={() => setExpandRequestAccordion(!expandRequestAccordion)}
                   >
                     <Typography
                       variant="subtitle2"
@@ -699,13 +712,13 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                                 }
                                 displaySize={"collapsed"}
                                 editable
-                                enableClipboard={true}
+                                enableClipboard={true}                               
                               />
                             </Box>
                           </Box>
                         )}
-
-                      {/* {selectedEndpoint.parameters &&
+    
+                       {selectedEndpoint.example === undefined && selectedEndpoint.parameters &&
                         selectedEndpoint.parameters.length > 0 && (
                           <Box>
                             <Typography
@@ -769,7 +782,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                               </Box>
                             ))}
                           </Box>
-                        )} */}
+                        )} 
                       {selectedEndpoint.requestBody && (
                         <Box sx={{ mt: 2 }}>
                           <Typography
@@ -812,7 +825,6 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                 {response && (
                   <Accordion
                     expanded={expandResponseAccordion}
-                    onClick={() => setExpandResponseAccordion(!expandResponseAccordion)}
                     sx={{
                       borderRadius: "8px",
                       backgroundColor: "#3e4c59",
@@ -820,7 +832,9 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                   >
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon sx={{ color: "#fff" }} />}
-                    >
+                      onClick={() => setExpandResponseAccordion(!expandResponseAccordion)}
+                   
+                   >
                       <Typography
                         variant="subtitle2"
                         gutterBottom
@@ -867,6 +881,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                             displaySize={"collapsed"}
                             dark
                             enableClipboard={true}
+                            
                           />
                         </Box>
                       </Paper>
