@@ -66,6 +66,9 @@
 .iconView svg {
   font-size: 22px;
 }
+.iconView.json-view.iconView svg:nth-of-type(3) {
+  display: none;
+}
 .iconView svg:hover {
   background: #1976d2;
   padding: 3px;
