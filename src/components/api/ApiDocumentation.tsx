@@ -302,6 +302,9 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
           overflow: "auto",
         }}
       >
+        <Box sx={{ p: 3 }} >
+        BrightQuery, Inc. (`"BQ") is the leading provider of U.S. business information, including firmographics, financials, credit events, employment, and benefits information. BQ tracks all companies operating in the U.S. that file taxes and have one or more employees (including the owner). BQ sources all information from U.S. government filings, leveraging in particular regulatory filings with the IRS, DOL, and the SEC. Finally, BQ provides over 5,000 fields, including company information, as well as aggregated statistics on industries, sectors, counties, states, and the U.S. economy overall.
+        </Box>
         {selectedEndpoint ? (
           <Box sx={{ p: 3 }} className="customeAppendCnt">
             <Box sx={{ display: "flex", alignItems: "center", gap: 1, mb: 2 }}>
@@ -616,6 +619,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                 </Accordion>
                 <Accordion
                   expanded={expandRequestAccordion}
+                  onClick={() => setExpandRequestAccordion(!expandRequestAccordion)}
                   sx={{
                     my: 2,
                     borderRadius: "8px",
@@ -810,6 +814,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                 {response && (
                   <Accordion
                     expanded={expandResponseAccordion}
+                    onClick={() => setExpandResponseAccordion(!expandResponseAccordion)}
                     sx={{
                       borderRadius: "8px",
                       backgroundColor: "#3e4c59",
