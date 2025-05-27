@@ -60,7 +60,9 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
   const [apiKey, setApiKey] = useState<string>("");
   const [isPending, startTransition] = useTransition();
   const [selectedExample, setSelectedExample] = useState<string>("");
-
+  const [expandRequestAccordion, setExpandRequestAccordion] = useState<boolean>(true);
+  const [expandResponseAccordion, setExpandResponseAccordion] = useState<boolean>(true);
+  
   // Extract all endpoints from the spec
   const endpoints = useMemo(() => {
     const result: ApiEndpoint[] = [];
@@ -84,6 +86,11 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
   useEffect(() => {
     if (endpoints.length > 0 && !selectedEndpoint) {
       setSelectedEndpoint(endpoints[0]);
+      if (endpoints[0].example && endpoints[0].example.length > 0) {
+        setSelectedExample(endpoints[0].example[0].scenario);
+      } else {
+        setSelectedExample("");
+      }
     }
   }, [endpoints, selectedEndpoint]);
 
@@ -100,11 +107,16 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
     setSelectedEndpoint(endpoint);
     setRequestBody("");
     setResponse(null);
+    if (endpoint.example && endpoint.example.length > 0) {
+      setSelectedExample(endpoint.example[0].scenario);
+    } else {
+      setSelectedExample("");
+    }
   };
 
   const handleTryIt = async () => {
     if (!selectedEndpoint) return;
-    console.log(selectedEndpoint);
+   
     try {
       startTransition(async () => {
         // Build query parameters
@@ -160,6 +172,8 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
             });
           });
       });
+      setExpandRequestAccordion(false);
+      setExpandResponseAccordion(true);
     } catch (err) {
       setResponse({
         status: 500,
@@ -601,6 +615,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                   </AccordionDetails>
                 </Accordion>
                 <Accordion
+                  expanded={expandRequestAccordion}
                   sx={{
                     my: 2,
                     borderRadius: "8px",
@@ -609,6 +624,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                 >
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon sx={{ color: "#fff" }} />}
+                    
                   >
                     <Typography
                       variant="subtitle2"
@@ -627,7 +643,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                         mb: 2,
                       }}
                     >
-                      {console.log(selectedEndpoint)}
+                     
 
                       {selectedEndpoint.example &&
                         selectedEndpoint.example.length > 0 && (
@@ -648,6 +664,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                                 marginTop: "10px",
                               }}
                             >
+                          
                               {selectedEndpoint.example?.map((example: any) => (
                                 <MenuItem
                                   key={example.scenario}
@@ -792,6 +809,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                 </Accordion>
                 {response && (
                   <Accordion
+                    expanded={expandResponseAccordion}
                     sx={{
                       borderRadius: "8px",
                       backgroundColor: "#3e4c59",
