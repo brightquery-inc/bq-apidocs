@@ -204,7 +204,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
         display: "flex",
         height: "calc(100vh - 64px)",
         width: "100%",
-        mt: "64px",
+        mt: "100px",
       }}
     >
       {/* Left Panel - API List */}
