@@ -2,40 +2,12 @@ import React from 'react';
 import {
   Box,
   Container,
-  Grid,
   Typography,
   Link,
-  IconButton,
-  useTheme,
-  useMediaQuery,
 } from '@mui/material';
-import {
-  Facebook,
-  Twitter,
-  LinkedIn,
-  GitHub,
-  Email,
-  Phone,
-  LocationOn,
-} from '@mui/icons-material';
 
 const Footer: React.FC = () => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
-  const socialLinks = [
-    { icon: <Facebook />, url: 'https://facebook.com' },
-    { icon: <Twitter />, url: 'https://twitter.com' },
-    { icon: <LinkedIn />, url: 'https://linkedin.com' },
-    { icon: <GitHub />, url: 'https://github.com' },
-  ];
-
-  const quickLinks = [
-    { text: 'About Us', url: '/about' },
-    { text: 'Services', url: '/services' },
-    { text: 'Contact', url: '/contact' },
-    { text: 'Privacy Policy', url: '/privacy' },
-  ];
 
   return (
     <Box

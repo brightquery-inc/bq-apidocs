@@ -6,6 +6,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  ListItemButton,
   Typography,
   Divider,
   Button,
@@ -21,7 +22,6 @@ import {
 import {
   Search as SearchIcon,
   Send as SendIcon,
-  Code as CodeIcon,
 } from "@mui/icons-material";
 import axios from "axios";
 import JsonView from "react18-json-view";
@@ -258,44 +258,46 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
           {filteredEndpoints.map((endpoint, index) => (
             <React.Fragment key={`${endpoint.method}-${endpoint.path}`}>
               <ListItem
-                button
-                selected={
-                  selectedEndpoint?.path === endpoint.path &&
-                  selectedEndpoint?.method === endpoint.method
-                }
-                onClick={() => handleEndpointClick(endpoint)}
-                sx={{ cursor: "pointer" }}
+                disablePadding
               >
-                <ListItemText
-                  className="custom-listButton"
-                  primary={
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                      <Chip
-                        label={endpoint.method}
-                        size="small"
-                        color={
-                          endpoint.method === "GET"
-                            ? "success"
-                            : endpoint.method === "POST"
-                            ? "primary"
-                            : endpoint.method === "PUT"
-                            ? "warning"
-                            : endpoint.method === "DELETE"
-                            ? "error"
-                            : "default"
-                        }
-                      />
-                      <Typography
-                        variant="body2"
-                        className="customParagraph"
-                        noWrap
-                      >
-                        {endpoint.path}
-                      </Typography>
-                    </Box>
+                <ListItemButton
+                  selected={
+                    selectedEndpoint?.path === endpoint.path &&
+                    selectedEndpoint?.method === endpoint.method
                   }
-                  secondary={endpoint.summary}
-                />
+                  onClick={() => handleEndpointClick(endpoint)}
+                >
+                  <ListItemText
+                    className="custom-listButton"
+                    primary={
+                      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                        <Chip
+                          label={endpoint.method}
+                          size="small"
+                          color={
+                            endpoint.method === "GET"
+                              ? "success"
+                              : endpoint.method === "POST"
+                              ? "primary"
+                              : endpoint.method === "PUT"
+                              ? "warning"
+                              : endpoint.method === "DELETE"
+                              ? "error"
+                              : "default"
+                          }
+                        />
+                        <Typography
+                          variant="body2"
+                          className="customParagraph"
+                          noWrap
+                        >
+                          {endpoint.path}
+                        </Typography>
+                      </Box>
+                    }
+                    secondary={endpoint.summary}
+                  />
+                </ListItemButton>
               </ListItem>
               {index < filteredEndpoints.length - 1 && <Divider />}
             </React.Fragment>

@@ -114,9 +114,10 @@ const Header: React.FC = () => {
               textDecoration: "none",
             }}
           >
-            <img
+            <Box
+              component="img"
               src={logo}
-              alt="BrightQuery"
+              alt="Logo"
               sx={{ width: "auto", height: "50px" }}
             />
           </Typography>
