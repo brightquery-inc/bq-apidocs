@@ -47,11 +47,13 @@ interface ApiEndpoint {
   example?: any[];
 }
 
+interface CategorizedEndpoints {
+  [category: string]: ApiEndpoint[];
+}
+
 const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedEndpoint, setSelectedEndpoint] = useState<ApiEndpoint | null>(
-    null
-  );
+  const [selectedEndpoint, setSelectedEndpoint] = useState<ApiEndpoint | null>(null);
   const [requestBody, setRequestBody] = useState("");
   const [response, setResponse] = useState<any>(null);
   const [paramValues, setParamValues] = useState<Record<string, string>>({});
@@ -60,24 +62,33 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
   const [apiKey, setApiKey] = useState<string>("");
   const [isPending, startTransition] = useTransition();
   const [selectedExample, setSelectedExample] = useState<string>("");
-  const [expandRequestAccordion, setExpandRequestAccordion] =
-    useState<boolean>(true);
-  const [expandResponseAccordion, setExpandResponseAccordion] =
-    useState<boolean>(true);
+  const [expandRequestAccordion, setExpandRequestAccordion] = useState<boolean>(true);
+  const [expandResponseAccordion, setExpandResponseAccordion] = useState<boolean>(true);
 
   // Extract all endpoints from the spec
-  const endpoints = useMemo(() => {
-    const result: ApiEndpoint[] = [];
+  const endpoints = useMemo<CategorizedEndpoints>(() => {
+    const result: CategorizedEndpoints = {};
+    
     if (spec.paths) {
-      Object.entries(spec.paths).forEach(([path, methods]: [string, any]) => {
-        Object.entries(methods).forEach(([method, details]: [string, any]) => {
-          if (method !== "parameters") {
-            result.push({
-              path,
-              method: method.toUpperCase(),
-              ...details,
-            });
+      spec.paths.forEach((categoryGroup: any) => {
+        Object.entries(categoryGroup).forEach(([category, endpoints]: [string, any]) => {
+          if (!result[category]) {
+            result[category] = [];
           }
+
+          endpoints.forEach((endpointGroup: any) => {
+            Object.entries(endpointGroup).forEach(([path, methods]: [string, any]) => {
+              Object.entries(methods).forEach(([method, details]: [string, any]) => {
+                if (method !== "parameters") {
+                  result[category].push({
+                    path,
+                    method: method.toUpperCase(),
+                    ...details,
+                  });
+                }
+              });
+            });
+          });
         });
       });
     }
@@ -86,10 +97,12 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
 
   // Select first endpoint by default
   useEffect(() => {
-    if (endpoints.length > 0 && !selectedEndpoint) {
-      setSelectedEndpoint(endpoints[0]);
-      if (endpoints[0].example && endpoints[0].example.length > 0) {
-        setSelectedExample(endpoints[0].example[0].scenario);
+    if (Object.keys(endpoints).length > 0 && !selectedEndpoint) {
+      const firstCategory = Object.keys(endpoints)[0];
+      const firstEndpoint = endpoints[firstCategory][0];
+      setSelectedEndpoint(firstEndpoint);
+      if (firstEndpoint.example && firstEndpoint.example.length > 0) {
+        setSelectedExample(firstEndpoint.example[0].scenario);
       } else {
         setSelectedExample("");
       }
@@ -97,12 +110,19 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
   }, [endpoints, selectedEndpoint]);
 
   // Filter endpoints based on search query
-  const filteredEndpoints = useMemo(() => {
-    return endpoints.filter(
-      (endpoint) =>
-        endpoint.path.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        endpoint.summary?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+  const filteredEndpoints = useMemo<CategorizedEndpoints>(() => {
+    const filtered: CategorizedEndpoints = {};
+    Object.entries(endpoints).forEach(([category, categoryEndpoints]) => {
+      const filteredCategoryEndpoints = categoryEndpoints.filter(
+        (endpoint) =>
+          endpoint.path.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          endpoint.summary?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+      if (filteredCategoryEndpoints.length > 0) {
+        filtered[category] = filteredCategoryEndpoints;
+      }
+    });
+    return filtered;
   }, [endpoints, searchQuery]);
 
   const handleEndpointClick = (endpoint: ApiEndpoint) => {
@@ -213,8 +233,8 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
         sx={{
           display: "flex",
           flexDirection: {
-            xs: "column", // Stack vertically on mobile
-            sm: "column", // Side-by-side from small screens
+            xs: "column",
+            sm: "column",
           },
           height: {
             xs: "auto",
@@ -255,52 +275,79 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
           />
         </Box>
         <List>
-          {filteredEndpoints.map((endpoint, index) => (
-            <React.Fragment key={`${endpoint.method}-${endpoint.path}`}>
-              <ListItem
-                disablePadding
+          {Object.entries(filteredEndpoints).map(([category, categoryEndpoints],index) => (   
+            <Accordion
+              key={category}
+              sx={{
+                boxShadow: 'none',
+                '&:before': {
+                  display: 'none',
+                },
+                borderBottom: '1px solid #ccc',
+              }}
+              defaultExpanded= {index === 0 ? true :false}
+            >
+              <AccordionSummary
+                expandIcon={<ExpandMoreIcon />}
+                sx={{
+                  backgroundColor: '#f5f5f5',
+                  '&:hover': {
+                    backgroundColor: '#e0e0e0',
+                  },
+                }}
               >
-                <ListItemButton
-                  selected={
-                    selectedEndpoint?.path === endpoint.path &&
-                    selectedEndpoint?.method === endpoint.method
-                  }
-                  onClick={() => handleEndpointClick(endpoint)}
-                >
-                  <ListItemText
-                    className="custom-listButton"
-                    primary={
-                      <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                        <Chip
-                          label={endpoint.method}
-                          size="small"
-                          color={
-                            endpoint.method === "GET"
-                              ? "success"
-                              : endpoint.method === "POST"
-                              ? "primary"
-                              : endpoint.method === "PUT"
-                              ? "warning"
-                              : endpoint.method === "DELETE"
-                              ? "error"
-                              : "default"
+                <Typography variant="subtitle1">
+                  {category}
+                </Typography>
+              </AccordionSummary>
+              <AccordionDetails sx={{ p: 0 }}>
+                {categoryEndpoints.map((endpoint, index) => (
+                  <React.Fragment key={`${endpoint.method}-${endpoint.path}`}>
+                    <ListItem disablePadding>
+                      <ListItemButton
+                        selected={
+                          selectedEndpoint?.path === endpoint.path &&
+                          selectedEndpoint?.method === endpoint.method
+                        }
+                        onClick={() => handleEndpointClick(endpoint)}
+                      >
+                        <ListItemText
+                          className="custom-listButton"
+                          primary={
+                            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                              <Chip
+                                label={endpoint.method}
+                                size="small"
+                                color={
+                                  endpoint.method === "GET"
+                                    ? "success"
+                                    : endpoint.method === "POST"
+                                    ? "primary"
+                                    : endpoint.method === "PUT"
+                                    ? "warning"
+                                    : endpoint.method === "DELETE"
+                                    ? "error"
+                                    : "default"
+                                }
+                              />
+                              <Typography
+                                variant="body2"
+                                className="customParagraph"
+                                noWrap
+                              >
+                                {endpoint.path}
+                              </Typography>
+                            </Box>
                           }
+                          secondary={endpoint.summary}
                         />
-                        <Typography
-                          variant="body2"
-                          className="customParagraph"
-                          noWrap
-                        >
-                          {endpoint.path}
-                        </Typography>
-                      </Box>
-                    }
-                    secondary={endpoint.summary}
-                  />
-                </ListItemButton>
-              </ListItem>
-              {index < filteredEndpoints.length - 1 && <Divider />}
-            </React.Fragment>
+                      </ListItemButton>
+                    </ListItem>
+                    {index < categoryEndpoints.length - 1 && <Divider />}
+                  </React.Fragment>
+                ))}
+              </AccordionDetails>
+            </Accordion>
           ))}
         </List>
       </Paper>
