@@ -478,7 +478,6 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                             p: 1,
                           }}
                         >
-                          
                           <Typography variant="body2">
                             {param.type || "string"}
                           </Typography>
@@ -492,8 +491,11 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                           <Typography variant="body2">
                             {param.description}
                           </Typography>
-                          {param.example ?
-                          <Typography><b>Example:</b> {param.example}</Typography>: null}
+                          {param.example ? (
+                            <Typography>
+                              <b>Example:</b> {param.example}
+                            </Typography>
+                          ) : null}
                         </Grid>
                       </Grid>
                     ))}
@@ -585,9 +587,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                 >
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon sx={{ color: "#fff" }} />}
-                    onClick={() =>
-                      setExpandAuthAccordion(!expandAuthAccordion)
-                    }
+                    onClick={() => setExpandAuthAccordion(!expandAuthAccordion)}
                   >
                     <Typography gutterBottom sx={{ color: "#fff" }}>
                       Authentication
@@ -716,9 +716,9 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                     }
                   >
                     <Typography
-                      variant="subtitle2"
+                      variant="body2"
                       gutterBottom
-                      sx={{ color: "#fff" }}
+                      sx={{ color: "#fff", fontSize: "1rem" }}
                     >
                       Request
                     </Typography>
