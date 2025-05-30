@@ -16,7 +16,12 @@
 }
 .customParagraph {
   font-weight: 500 !important;
-  color: #333;
+  color: #002952 !important;
+}
+.custom-listButton p {
+  font-weight: 400 !important;
+  color: #929292;
+  padding-top: 3px;
 }
 .customeAppendCnt .MuiChip-filledPrimary {
   font-size: 10px;

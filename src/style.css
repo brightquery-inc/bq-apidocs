@@ -60,6 +60,9 @@ button:focus-visible {
 .gridBorderHdr {
   background: #b8b8b8 !important;
 }
+.gridBorderHdr p {
+  font-weight: 600 !important;
+}
 
 .gridBorderCell:nth-child(odd) {
   background-color: #eeeeee !important;

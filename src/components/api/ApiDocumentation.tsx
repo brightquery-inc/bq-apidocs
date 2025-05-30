@@ -346,11 +346,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                                       : "default"
                                   }
                                 />
-                                <Typography
-                                  variant="body2"
-                                  className="customParagraph"
-                                  noWrap
-                                >
+                                <Typography className="customParagraph" noWrap>
                                   {endpoint.path}
                                 </Typography>
                               </Box>
