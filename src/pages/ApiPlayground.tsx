@@ -188,7 +188,7 @@ how it links to its component legal entities; type of hierarchy.`,
               corporate parent and children.`,
               "security": [
                 {
-                  "apiKey": []
+                  "basicAuth": []
                 }
               ],
               "example": [
