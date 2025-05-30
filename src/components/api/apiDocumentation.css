@@ -75,3 +75,18 @@
   border-radius: 20px;
   color: #fff;
 }
+.leftCategory {
+  background: #e4e7eb !important;
+  border-bottom: none !important;
+  margin-bottom: 10px;
+}
+.leftCategory .leftCategory:hover {
+  background: "#f5f5f5";
+}
+.leftCategory::selection {
+  background: "#e4e7eb !important";
+}
+.catetorymain .Mui-expanded {
+  margin: 5px 0px !important;
+  min-height: 20px !important;
+}
