@@ -67,6 +67,10 @@ button:focus-visible {
 .gridBorderCell:nth-child(even) {
   background-color: #ffffff !important;
 }
+button:focus,
+button:focus-visible {
+  outline: none !important;
+}
 
 @media (prefers-color-scheme: light) {
   :root {
