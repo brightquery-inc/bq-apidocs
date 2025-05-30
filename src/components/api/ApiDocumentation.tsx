@@ -283,6 +283,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
           {Object.entries(filteredEndpoints).map(
             ([category, categoryEndpoints], index) => (
               <Accordion
+                className="catetorymain"
                 key={category}
                 sx={{
                   boxShadow: "none",
