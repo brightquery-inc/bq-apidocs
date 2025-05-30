@@ -41,7 +41,7 @@ how it links to its component legal entities; type of hierarchy.`,
 
               "example": [
                 {
-                  "scenario": "Name Address",
+                  "scenario": "Name + Address",
                   "parameters": {
                     "company_name": "Flower",
                     "address": "1919 Flowers Cir Thomasville"
@@ -181,7 +181,7 @@ how it links to its component legal entities; type of hierarchy.`,
         },
         {
           "/business-identity-api/le": {
-            "get": {
+            "post": {
               "summary": "Legal Entities API",
               "description": `Legal entity identifying and status information, such 
               as home jurisdiction, legal status, active status, legal address, 
@@ -263,7 +263,7 @@ how it links to its component legal entities; type of hierarchy.`,
         },
         {
           "/business-identity-api/location": {
-            "get": {
+            "post": {
               "summary": "Location API",
               "description": `Business locations (address, industry category) 
               associated with an organization; these are typically stores, offices, 
@@ -300,7 +300,7 @@ how it links to its component legal entities; type of hierarchy.`,
                 {
                   "name": "location_name",
                   "in": "query",
-                  "description": "Name of the Location, often a DBA",                 
+                  "description": "Name of the Location, often a DBA.",                 
                   "required": false,
                   "type": "string"
                 },
@@ -339,7 +339,7 @@ how it links to its component legal entities; type of hierarchy.`,
         {
           "/bq-append/org": {
             "post": {
-              "summary": "Company Search",
+              "summary": "Company Search API",
               "description": `An organization is a company, which represents a collection of legal entities that are
 under common control; this table contains basic identifying information on the organization, and
 how it links to its component legal entities; type of hierarchy.`,
@@ -556,7 +556,7 @@ phone, LinkedIn URL, address.
                 {
                   "name": "linkedin_url",
                   "in": "query",
-                  "description": "Executive Linkedin URL",
+                  "description": "Executive Linkedin URL.",
                   "required": false,
                   "type":"string"
                 },
