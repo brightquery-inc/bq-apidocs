@@ -64,7 +64,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
     useState<boolean>(true);
   const [expandResponseAccordion, setExpandResponseAccordion] =
     useState<boolean>(true);
-  const [exapandAuthAccordion, setExapandAuthAccordion] = useState<boolean>(true);
+  const [expandAuthAccordion, setExpandAuthAccordion] = useState<boolean>(true);
 
   // Extract all endpoints from the spec
   const endpoints = useMemo<CategorizedEndpoints>(() => {
@@ -201,7 +201,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
               setResponse(res.data);
               setExpandRequestAccordion(false);
               setExpandResponseAccordion(true);
-              setExapandAuthAccordion(false);
+              setExpandAuthAccordion(false);
             }
           })
           .catch((err) => {
@@ -211,7 +211,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
             });
             setExpandRequestAccordion(false);
             setExpandResponseAccordion(true);
-            setExapandAuthAccordion(false);
+            setExpandAuthAccordion(false);
           });
       });
     } catch (err) {
@@ -575,7 +575,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                   </Typography>
                 </Box>
                 <Accordion
-                  expanded={exapandAuthAccordion}
+                  expanded={expandAuthAccordion}
                   sx={{
                     borderRadius: "8px",
                     border: "1px solid #6C757D",
@@ -585,6 +585,9 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                 >
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon sx={{ color: "#fff" }} />}
+                    onClick={() =>
+                      setExpandAuthAccordion(!expandAuthAccordion)
+                    }
                   >
                     <Typography gutterBottom sx={{ color: "#fff" }}>
                       Authentication
