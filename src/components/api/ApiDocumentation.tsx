@@ -404,7 +404,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                   <Box>
                     <Grid container className="gridBorderHdr">
                       <Grid
-                        size={5}
+                        size={4}
                         sx={{
                           padding: 1,
                         }}
@@ -414,7 +414,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                         </Typography>
                       </Grid>
                       <Grid
-                        size={3}
+                        size={1}
                         sx={{
                           padding: 1,
                         }}
@@ -424,7 +424,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                         </Typography>
                       </Grid>
                       <Grid
-                        size={4}
+                        size={6}
                         sx={{
                           padding: 1,
                         }}
@@ -437,7 +437,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                     {selectedEndpoint.parameters.map((param: any) => (
                       <Grid container className="gridBorderCell">
                         <Grid
-                          size={5}
+                          size={4}
                           sx={{
                             p: 1,
                           }}
@@ -456,17 +456,18 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                           </Typography>
                         </Grid>
                         <Grid
-                          size={3}
+                          size={1}
                           sx={{
                             p: 1,
                           }}
                         >
+                          
                           <Typography variant="body2">
-                            {param.schema?.type || "string"}
+                            {param.type || "string"}
                           </Typography>
                         </Grid>
                         <Grid
-                          size={4}
+                          size={6}
                           sx={{
                             p: 1,
                           }}
@@ -474,6 +475,8 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                           <Typography variant="body2">
                             {param.description}
                           </Typography>
+                          {param.example ?
+                          <Typography><b>Example:</b> {param.example}</Typography>: null}
                         </Grid>
                       </Grid>
                     ))}
