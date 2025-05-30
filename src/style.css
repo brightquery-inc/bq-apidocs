@@ -74,7 +74,11 @@ button:focus,
 button:focus-visible {
   outline: none !important;
 }
-
+.headerMenu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

@@ -85,6 +85,10 @@
   border-bottom: none !important;
   margin-bottom: 10px;
 }
+.leftCategory.MuiAccordionSummary-root {
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+}
 .leftCategory .leftCategory:hover {
   background: "#f5f5f5";
 }

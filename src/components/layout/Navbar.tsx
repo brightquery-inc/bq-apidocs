@@ -32,7 +32,7 @@ const Navbar = () => {
       }}
     >
       <Container maxWidth={false} disableGutters sx={{ width: "100%" }}>
-        <Toolbar disableGutters>
+        <Toolbar disableGutters className="headerMenu">
           <Typography
             variant="h6"
             component="div"
