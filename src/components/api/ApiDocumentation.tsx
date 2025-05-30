@@ -19,10 +19,7 @@ import {
   Select,
   InputLabel,
 } from "@mui/material";
-import {
-  Search as SearchIcon,
-  Send as SendIcon,
-} from "@mui/icons-material";
+import { Search as SearchIcon, Send as SendIcon } from "@mui/icons-material";
 import axios from "axios";
 import JsonView from "react18-json-view";
 import "react18-json-view/src/style.css";
@@ -53,7 +50,9 @@ interface CategorizedEndpoints {
 
 const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedEndpoint, setSelectedEndpoint] = useState<ApiEndpoint | null>(null);
+  const [selectedEndpoint, setSelectedEndpoint] = useState<ApiEndpoint | null>(
+    null
+  );
   const [requestBody, setRequestBody] = useState("");
   const [response, setResponse] = useState<any>(null);
   const [paramValues, setParamValues] = useState<Record<string, string>>({});
@@ -62,34 +61,42 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
   const [apiKey, setApiKey] = useState<string>("");
   const [isPending, startTransition] = useTransition();
   const [selectedExample, setSelectedExample] = useState<string>("");
-  const [expandRequestAccordion, setExpandRequestAccordion] = useState<boolean>(true);
-  const [expandResponseAccordion, setExpandResponseAccordion] = useState<boolean>(true);
+  const [expandRequestAccordion, setExpandRequestAccordion] =
+    useState<boolean>(true);
+  const [expandResponseAccordion, setExpandResponseAccordion] =
+    useState<boolean>(true);
 
   // Extract all endpoints from the spec
   const endpoints = useMemo<CategorizedEndpoints>(() => {
     const result: CategorizedEndpoints = {};
-    
+
     if (spec.paths) {
       spec.paths.forEach((categoryGroup: any) => {
-        Object.entries(categoryGroup).forEach(([category, endpoints]: [string, any]) => {
-          if (!result[category]) {
-            result[category] = [];
-          }
+        Object.entries(categoryGroup).forEach(
+          ([category, endpoints]: [string, any]) => {
+            if (!result[category]) {
+              result[category] = [];
+            }
 
-          endpoints.forEach((endpointGroup: any) => {
-            Object.entries(endpointGroup).forEach(([path, methods]: [string, any]) => {
-              Object.entries(methods).forEach(([method, details]: [string, any]) => {
-                if (method !== "parameters") {
-                  result[category].push({
-                    path,
-                    method: method.toUpperCase(),
-                    ...details,
-                  });
+            endpoints.forEach((endpointGroup: any) => {
+              Object.entries(endpointGroup).forEach(
+                ([path, methods]: [string, any]) => {
+                  Object.entries(methods).forEach(
+                    ([method, details]: [string, any]) => {
+                      if (method !== "parameters") {
+                        result[category].push({
+                          path,
+                          method: method.toUpperCase(),
+                          ...details,
+                        });
+                      }
+                    }
+                  );
                 }
-              });
+              );
             });
-          });
-        });
+          }
+        );
       });
     }
     return result;
@@ -153,14 +160,14 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
           }
         });
 
-         selectedEndpoint.example?.forEach((example: any) => {
+        selectedEndpoint.example?.forEach((example: any) => {
           if (example.scenario === selectedExample) {
             data = example.parameters;
           }
           Object.entries(data).forEach(([key, value]) => {
             queryParams.append(key, String(value));
           });
-         });
+        });
         // Here you would make the actual API call
         // For now, we'll just simulate a response
 
@@ -205,8 +212,6 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
             setExpandRequestAccordion(false);
             setExpandResponseAccordion(true);
           });
-                    
-     
       });
     } catch (err) {
       setResponse({
@@ -238,7 +243,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
           },
           height: {
             xs: "auto",
-            sm: "calc(100vh - 10px)",
+            // sm: "calc(100vh - 10px)",
           },
           width: {
             xs: "100%",
@@ -275,80 +280,90 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
           />
         </Box>
         <List>
-          {Object.entries(filteredEndpoints).map(([category, categoryEndpoints],index) => (   
-            <Accordion
-              key={category}
-              sx={{
-                boxShadow: 'none',
-                '&:before': {
-                  display: 'none',
-                },
-                borderBottom: '1px solid #ccc',
-              }}
-              defaultExpanded= {index === 0 ? true :false}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
+          {Object.entries(filteredEndpoints).map(
+            ([category, categoryEndpoints], index) => (
+              <Accordion
+                key={category}
                 sx={{
-                  backgroundColor: '#f5f5f5',
-                  '&:hover': {
-                    backgroundColor: '#e0e0e0',
+                  boxShadow: "none",
+                  "&:before": {
+                    display: "none",
                   },
                 }}
+                defaultExpanded={index === 0 ? true : false}
               >
-                <Typography variant="subtitle1">
-                  {category}
-                </Typography>
-              </AccordionSummary>
-              <AccordionDetails sx={{ p: 0 }}>
-                {categoryEndpoints.map((endpoint, index) => (
-                  <React.Fragment key={`${endpoint.method}-${endpoint.path}`}>
-                    <ListItem disablePadding>
-                      <ListItemButton
-                        selected={
-                          selectedEndpoint?.path === endpoint.path &&
-                          selectedEndpoint?.method === endpoint.method
-                        }
-                        onClick={() => handleEndpointClick(endpoint)}
-                      >
-                        <ListItemText
-                          className="custom-listButton"
-                          primary={
-                            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                              <Chip
-                                label={endpoint.method}
-                                size="small"
-                                color={
-                                  endpoint.method === "GET"
-                                    ? "success"
-                                    : endpoint.method === "POST"
-                                    ? "primary"
-                                    : endpoint.method === "PUT"
-                                    ? "warning"
-                                    : endpoint.method === "DELETE"
-                                    ? "error"
-                                    : "default"
-                                }
-                              />
-                              <Typography
-                                variant="body2"
-                                className="customParagraph"
-                                noWrap
-                              >
-                                {endpoint.path}
-                              </Typography>
-                            </Box>
+                <AccordionSummary
+                  className="leftCategory"
+                  sx={{
+                    mt: 1,
+                    minHeight: "20px",
+                    "&.MuiAccordionSummary-root": {
+                      paddingY: "4px",
+                    },
+                    "& .MuiAccordionSummary-content": {
+                      marginY: "4px",
+                    },
+                  }}
+                  expandIcon={<ExpandMoreIcon />}
+                >
+                  <Typography variant="subtitle1">{category}</Typography>
+                </AccordionSummary>
+                <AccordionDetails sx={{ p: 0 }}>
+                  {categoryEndpoints.map((endpoint, index) => (
+                    <React.Fragment key={`${endpoint.method}-${endpoint.path}`}>
+                      <ListItem disablePadding>
+                        <ListItemButton
+                          selected={
+                            selectedEndpoint?.path === endpoint.path &&
+                            selectedEndpoint?.method === endpoint.method
                           }
-                          secondary={endpoint.summary}
-                        />
-                      </ListItemButton>
-                    </ListItem>
-                    {index < categoryEndpoints.length - 1 && <Divider />}
-                  </React.Fragment>
-                ))}
-              </AccordionDetails>
-            </Accordion>
-          ))}
+                          onClick={() => handleEndpointClick(endpoint)}
+                        >
+                          <ListItemText
+                            className="custom-listButton"
+                            primary={
+                              <Box
+                                sx={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  gap: 1,
+                                }}
+                              >
+                                <Chip
+                                  label={endpoint.method}
+                                  size="small"
+                                  color={
+                                    endpoint.method === "GET"
+                                      ? "success"
+                                      : endpoint.method === "POST"
+                                      ? "primary"
+                                      : endpoint.method === "PUT"
+                                      ? "warning"
+                                      : endpoint.method === "DELETE"
+                                      ? "error"
+                                      : "default"
+                                  }
+                                />
+                                <Typography
+                                  variant="body2"
+                                  className="customParagraph"
+                                  noWrap
+                                >
+                                  {endpoint.path}
+                                </Typography>
+                              </Box>
+                            }
+                            secondary={endpoint.summary}
+                          />
+                        </ListItemButton>
+                      </ListItem>
+                      {index < categoryEndpoints.length - 1}
+                    </React.Fragment>
+                  ))}
+                </AccordionDetails>
+              </Accordion>
+            )
+          )}
         </List>
       </Paper>
 
@@ -679,7 +694,6 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                 </Accordion>
                 <Accordion
                   expanded={expandRequestAccordion}
-                  
                   sx={{
                     my: 2,
                     borderRadius: "8px",
@@ -688,7 +702,9 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                 >
                   <AccordionSummary
                     expandIcon={<ExpandMoreIcon sx={{ color: "#fff" }} />}
-                    onClick={() => setExpandRequestAccordion(!expandRequestAccordion)}
+                    onClick={() =>
+                      setExpandRequestAccordion(!expandRequestAccordion)
+                    }
                   >
                     <Typography
                       variant="subtitle2"
@@ -761,13 +777,14 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                                 }
                                 displaySize={"collapsed"}
                                 editable
-                                enableClipboard={true}                               
+                                enableClipboard={true}
                               />
                             </Box>
                           </Box>
                         )}
-    
-                       {selectedEndpoint.example === undefined && selectedEndpoint.parameters &&
+
+                      {selectedEndpoint.example === undefined &&
+                        selectedEndpoint.parameters &&
                         selectedEndpoint.parameters.length > 0 && (
                           <Box>
                             <Typography
@@ -831,7 +848,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                               </Box>
                             ))}
                           </Box>
-                        )} 
+                        )}
                       {selectedEndpoint.requestBody && (
                         <Box sx={{ mt: 2 }}>
                           <Typography
@@ -881,9 +898,10 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                   >
                     <AccordionSummary
                       expandIcon={<ExpandMoreIcon sx={{ color: "#fff" }} />}
-                      onClick={() => setExpandResponseAccordion(!expandResponseAccordion)}
-                   
-                   >
+                      onClick={() =>
+                        setExpandResponseAccordion(!expandResponseAccordion)
+                      }
+                    >
                       <Typography
                         variant="subtitle2"
                         gutterBottom
@@ -930,7 +948,6 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                             displaySize={"collapsed"}
                             dark
                             enableClipboard={true}
-                            
                           />
                         </Box>
                       </Paper>
