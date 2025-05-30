@@ -8,7 +8,6 @@ import {
   ListItemText,
   ListItemButton,
   Typography,
-  Divider,
   Button,
   InputAdornment,
   Grid,
@@ -65,6 +64,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
     useState<boolean>(true);
   const [expandResponseAccordion, setExpandResponseAccordion] =
     useState<boolean>(true);
+  const [exapandAuthAccordion, setExapandAuthAccordion] = useState<boolean>(true);
 
   // Extract all endpoints from the spec
   const endpoints = useMemo<CategorizedEndpoints>(() => {
@@ -201,16 +201,17 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
               setResponse(res.data);
               setExpandRequestAccordion(false);
               setExpandResponseAccordion(true);
+              setExapandAuthAccordion(false);
             }
           })
           .catch((err) => {
-            console.log(err);
             setResponse({
               status: err.status,
               error: err.message,
             });
             setExpandRequestAccordion(false);
             setExpandResponseAccordion(true);
+            setExapandAuthAccordion(false);
           });
       });
     } catch (err) {
@@ -574,6 +575,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                   </Typography>
                 </Box>
                 <Accordion
+                  expanded={exapandAuthAccordion}
                   sx={{
                     borderRadius: "8px",
                     border: "1px solid #6C757D",
