@@ -1,5 +1,5 @@
 import { useNavigate, useLocation } from "react-router-dom";
-import logo from "/logo.svg";
+import logo from "../../assets/logo.svg";
 import {
   AppBar,
   Toolbar,
