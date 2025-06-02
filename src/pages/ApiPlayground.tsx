@@ -520,7 +520,7 @@ how it links to its component legal entities; type of hierarchy.`,
           }
         },
         {
-          "/business-identity-api/org": {
+          "/bq-append/executives": {
             "post": {
               "summary": "People Search API",
               "description": `Organization-level Executives including first & last name, job title, email (personal, office),
