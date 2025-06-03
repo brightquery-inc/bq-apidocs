@@ -96,7 +96,7 @@ how it links to its component legal entities; type of hierarchy.`,
                   "name": "bq_id",
                   "in": "query",
                   "description": "Unique ID assigned by BQ to the Organization.",
-                  "required": true,
+                  "required": false,
                   "type": "string"
                 },
                 {
@@ -2984,7 +2984,7 @@ how it links to its component legal entities; type of hierarchy.`,
                   "name": "bq_id",
                   "in": "query",
                   "description": "Unique ID assigned by BQ to the Organization.",
-                  "required": true,
+                  "required": false,
                   "type": "string"
                 },
                 {
@@ -4823,7 +4823,7 @@ phone, LinkedIn URL, address.
                   "name": "executives_name ",
                   "in": "query",
                   "description": "Full name of the Executive.",
-                  "required": true,
+                  "required": false,
                   "type":"string"
                 },
                 {
