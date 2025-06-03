@@ -252,20 +252,22 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
         elevation={0}
         sx={{
           display: "flex",
+          overflowY: "auto",
           flexDirection: {
             xs: "column",
             sm: "column",
           },
-          height: {
-            xs: "auto",
-            // sm: "calc(100vh - 10px)",
-          },
+          // height: {
+          //   xs: "auto",
+          //   sm: "calc(100vh - 40px)",
+          // },
+          height: "96vh",
           width: {
             xs: "100%",
             sm: "25%",
             md: "20%",
           },
-          mt: "10px",
+          mt: "0px",
           borderRight: " solid 1px #ccc",
         }}
       >
