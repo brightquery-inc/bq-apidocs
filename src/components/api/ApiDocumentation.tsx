@@ -238,7 +238,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
     }
   };
 
-  const handleTabChange=(e:React.SyntheticEvent, val:string)=>{
+  const handleTabChange=(_e:React.SyntheticEvent, val:string)=>{
     setTabValue(val);
   }
 
