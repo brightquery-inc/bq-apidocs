@@ -18,6 +18,11 @@ import {
   Select,
   InputLabel,
 } from "@mui/material";
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+
 import { Search as SearchIcon, Send as SendIcon } from "@mui/icons-material";
 import axios from "axios";
 import JsonView from "react18-json-view";
@@ -65,6 +70,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
   const [expandResponseAccordion, setExpandResponseAccordion] =
     useState<boolean>(true);
   const [expandAuthAccordion, setExpandAuthAccordion] = useState<boolean>(true);
+  const [tabValue, setTabValue] = useState("200")
 
   // Extract all endpoints from the spec
   const endpoints = useMemo<CategorizedEndpoints>(() => {
@@ -108,6 +114,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
       const firstCategory = Object.keys(endpoints)[0];
       const firstEndpoint = endpoints[firstCategory][0];
       setSelectedEndpoint(firstEndpoint);
+      setResponse(firstEndpoint.responses[0].success)
       if (firstEndpoint.example && firstEndpoint.example.length > 0) {
         setSelectedExample(firstEndpoint.example[0].scenario);
       } else {
@@ -135,7 +142,8 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
   const handleEndpointClick = (endpoint: ApiEndpoint) => {
     setSelectedEndpoint(endpoint);
     setRequestBody("");
-    setResponse(null);
+    setResponse(endpoint.responses[0].success)
+    console.log("endpoint",endpoint)
     if (endpoint.example && endpoint.example.length > 0) {
       setSelectedExample(endpoint.example[0].scenario);
     } else {
@@ -189,8 +197,8 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
             Accept: "*/*",
             Authorization:
               selectedEndpoint.security &&
-              selectedEndpoint.security.length > 0 &&
-              selectedEndpoint.security[0].apiKey
+                selectedEndpoint.security.length > 0 &&
+                selectedEndpoint.security[0].apiKey
                 ? `Bearer ${apiKey}`
                 : `Basic ${token}`,
             "x-api-key": apiKey,
@@ -202,6 +210,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
               setExpandRequestAccordion(false);
               setExpandResponseAccordion(true);
               setExpandAuthAccordion(false);
+              setTabValue(res.status.toString())
             }
           })
           .catch((err) => {
@@ -212,6 +221,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
             setExpandRequestAccordion(false);
             setExpandResponseAccordion(true);
             setExpandAuthAccordion(false);
+            setTabValue(err.status.toString())
           });
       });
     } catch (err) {
@@ -221,6 +231,10 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
       });
     }
   };
+
+  const handleTabChange=(e:React.SyntheticEvent, val:string)=>{
+    setTabValue(val);
+  }
 
   return (
     <Box
@@ -338,12 +352,12 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                                     endpoint.method === "GET"
                                       ? "success"
                                       : endpoint.method === "POST"
-                                      ? "primary"
-                                      : endpoint.method === "PUT"
-                                      ? "warning"
-                                      : endpoint.method === "DELETE"
-                                      ? "error"
-                                      : "default"
+                                        ? "primary"
+                                        : endpoint.method === "PUT"
+                                          ? "warning"
+                                          : endpoint.method === "DELETE"
+                                            ? "error"
+                                            : "default"
                                   }
                                 />
                                 <Typography className="customParagraph" noWrap>
@@ -387,12 +401,12 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                   selectedEndpoint.method === "GET"
                     ? "success"
                     : selectedEndpoint.method === "POST"
-                    ? "primary"
-                    : selectedEndpoint.method === "PUT"
-                    ? "warning"
-                    : selectedEndpoint.method === "DELETE"
-                    ? "error"
-                    : "default"
+                      ? "primary"
+                      : selectedEndpoint.method === "PUT"
+                        ? "warning"
+                        : selectedEndpoint.method === "DELETE"
+                          ? "error"
+                          : "default"
                 }
               />
               <Typography variant="h6">{selectedEndpoint.path}</Typography>
@@ -417,7 +431,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                   <Box>
                     <Grid container className="gridBorderHdr">
                       <Grid
-                        size={4}
+                        size={3.5}
                         sx={{
                           padding: 1,
                         }}
@@ -427,7 +441,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                         </Typography>
                       </Grid>
                       <Grid
-                        size={1}
+                        size={1.5}
                         sx={{
                           padding: 1,
                         }}
@@ -450,7 +464,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                     {selectedEndpoint.parameters.map((param: any) => (
                       <Grid container className="gridBorderCell">
                         <Grid
-                          size={4}
+                          size={3.5}
                           sx={{
                             p: 1,
                           }}
@@ -469,7 +483,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                           </Typography>
                         </Grid>
                         <Grid
-                          size={1}
+                          size={1.5}
                           sx={{
                             p: 1,
                           }}
@@ -591,8 +605,8 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                   </AccordionSummary>
                   <AccordionDetails sx={{ backgroundColor: "#52606D" }}>
                     {selectedEndpoint.security &&
-                    selectedEndpoint.security.length > 0 &&
-                    selectedEndpoint.security[0].apiKey ? (
+                      selectedEndpoint.security.length > 0 &&
+                      selectedEndpoint.security[0].apiKey ? (
                       <Box sx={{ mt: 2, mb: 1 }}>
                         <TextField
                           fullWidth
@@ -924,11 +938,12 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                           mb: 2,
                         }}
                       >
+
                         <Box sx={{ mb: 1 }}>
                           <Chip
-                            label={`Status: ${response.status}`}
+                            label={`Status: ${tabValue}`}
                             color={
-                              response.status === 200 ? "success" : "error"
+                              tabValue === "200" ? "success" : "error"
                             }
                             size="small"
                           />
@@ -946,14 +961,38 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                             overflow: "auto",
                           }}
                         >
-                          {/* {JSON.stringify(response.data || response, null, 2)} */}
-
-                          <JsonView
+                        
+                          <TabContext value={tabValue}>
+                            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                              <TabList onChange={handleTabChange} aria-label="lab API tabs example">
+                                <Tab label="200" value="200" />
+                                {selectedEndpoint.responses[0]?.error?.map((response: any) => (
+                                  <Tab label={response.status} value={response.status} />
+                                ))}
+                              </TabList>
+                            </Box>
+                            <TabPanel value="200">
+                            <JsonView
                             src={response}
                             displaySize={"collapsed"}
                             dark
                             enableClipboard={true}
                           />
+                            </TabPanel>
+                            {selectedEndpoint.responses[0]?.error?.map((errResponse: any) => (
+                            <TabPanel value={errResponse.status}>                             
+                            <JsonView
+                            src={errResponse}
+                            displaySize={"collapsed"}
+                            dark
+                            enableClipboard={true}
+                          />  
+                          </TabPanel>
+                           
+                          ))}
+                          </TabContext>
+
+                          
                         </Box>
                       </Paper>
                     </AccordionDetails>
