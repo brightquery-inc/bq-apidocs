@@ -17,6 +17,7 @@ import {
   MenuItem,
   Select,
   InputLabel,
+  CircularProgress,
 } from "@mui/material";
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -71,7 +72,8 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
     useState<boolean>(true);
   const [expandAuthAccordion, setExpandAuthAccordion] = useState<boolean>(true);
   const [tabValue, setTabValue] = useState("200")
-
+  const [actualApiResponse, setActualApiResponse] = useState<any>(null)
+  
   // Extract all endpoints from the spec
   const endpoints = useMemo<CategorizedEndpoints>(() => {
     const result: CategorizedEndpoints = {};
@@ -142,8 +144,9 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
   const handleEndpointClick = (endpoint: ApiEndpoint) => {
     setSelectedEndpoint(endpoint);
     setRequestBody("");
+    setActualApiResponse(null);
     setResponse(endpoint.responses[0].success)
-    console.log("endpoint",endpoint)
+    setTabValue("200");
     if (endpoint.example && endpoint.example.length > 0) {
       setSelectedExample(endpoint.example[0].scenario);
     } else {
@@ -206,7 +209,7 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
         })
           .then((res) => {
             if (res.status === 200) {
-              setResponse(res.data);
+              setActualApiResponse(res.data)
               setExpandRequestAccordion(false);
               setExpandResponseAccordion(true);
               setExpandAuthAccordion(false);
@@ -214,10 +217,13 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
             }
           })
           .catch((err) => {
-            setResponse({
-              status: err.status,
-              error: err.message,
-            });
+            const apiErr = {
+              data:{
+                message: err.response.data.message
+              },
+              status: err.response.status 
+            }
+            setActualApiResponse(apiErr);
             setExpandRequestAccordion(false);
             setExpandResponseAccordion(true);
             setExpandAuthAccordion(false);
@@ -931,7 +937,17 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                         Response
                       </Typography>
                     </AccordionSummary>
-                    <AccordionDetails sx={{ p: 0 }}>
+                    <AccordionDetails sx={{ p: 0}}>
+                    {isPending ?
+                     <CircularProgress 
+                      color="warning"                    
+                      sx={{
+                        position: 'absolute',
+                        top: '40%',
+                        left: '45%',
+                        transform: 'translate(-50%, -50%)',
+                      }}
+                     /> :
                       <Paper
                         variant="outlined"
                         sx={{
@@ -963,7 +979,14 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                             overflow: "auto",
                           }}
                         >
-                        
+                        {actualApiResponse !== null ?  
+                        <JsonView
+                        src={actualApiResponse}
+                        displaySize={"collapsed"}
+                        dark
+                        enableClipboard={true}
+                      /> 
+                         :
                           <TabContext value={tabValue}>
                             <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                               <TabList onChange={handleTabChange} aria-label="lab API tabs example">
@@ -993,10 +1016,10 @@ const ApiDocumentation: React.FC<ApiDocumentationProps> = ({ spec }) => {
                            
                           ))}
                           </TabContext>
-
+                        }
                           
                         </Box>
-                      </Paper>
+                      </Paper>}
                     </AccordionDetails>
                   </Accordion>
                 )}
