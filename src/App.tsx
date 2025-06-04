@@ -5,8 +5,13 @@ import ApiPlayground from './pages/ApiPlayground';
 import Dashboard from './pages/Dashboard';
 
 const App: React.FC = () => {
+    // const token = localStorage.getItem("token");
+    // if(token === null){
+    //     window.location.href = "https://apps2.brightquery.com/login"
+    //     return;
+    // }
     return (
-        <Router>
+        <Router basename='/bqapi/'>
             <Routes>
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Navigate to="/dashboard" replace />} />
