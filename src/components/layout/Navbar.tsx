@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import {
@@ -7,10 +8,17 @@ import {
   Button,
   Box,
   Container,
+  Menu,
+  MenuItem,
 } from "@mui/material";
 import {
   Dashboard as DashboardIcon,
   Api as ApiIcon,
+  PriceChange as PricingIcon,
+  AccountCircle as ProfileIcon,
+  Logout as LogoutIcon,
+  Apps as AppsIcon,
+  ArrowDropDown as ArrowDropDownIcon,
 } from "@mui/icons-material";
 
 const menuItems = [
@@ -21,6 +29,20 @@ const menuItems = [
 const Navbar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  const handleAppsClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleAppsClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout=()=>{
+    console.log('logout');
+  }
 
   return (
     <AppBar
@@ -69,6 +91,51 @@ const Navbar = () => {
                 {item.text}
               </Button>
             ))}
+            <Button
+              color="inherit"
+              startIcon={<AppsIcon />}
+              endIcon={<ArrowDropDownIcon />}
+              onClick={handleAppsClick}
+              aria-controls={open ? 'apps-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+            >
+              Apps
+            </Button>
+            <Menu
+              id="apps-menu"
+              anchorEl={anchorEl}
+              open={open}
+              onClose={handleAppsClose}
+              MenuListProps={{
+                'aria-labelledby': 'apps-button',
+              }}
+            >
+              <MenuItem onClick={()=>window.open("https://locator2.brightquery.com/","_blank")}>Locator 2</MenuItem>
+              <MenuItem onClick={()=>window.open("https://terminal2.brightquery.com/","_blank")}>Terminal 2</MenuItem>
+              <MenuItem onClick={()=> window.open("https://prospector2.brightquery.com/", "_blank")}>Prospector 2</MenuItem>
+            </Menu>
+            <Button
+              color="inherit"
+              startIcon={<PricingIcon />}
+              onClick={() => window.open("https://apps2.brightquery.com/pricing", "_blank")}
+            >
+              Pricing
+            </Button>
+            <Button
+              color="inherit"
+              startIcon={<ProfileIcon />}
+              onClick={() => window.open("https://apps2.brightquery.com/profile", "_blank")}
+            >
+              Profile
+            </Button>
+            <Button
+              color="inherit"
+              startIcon={<LogoutIcon />}
+              onClick={handleLogout}
+            >
+              Logout
+            </Button>
           </Box>
         </Toolbar>
       </Container>
