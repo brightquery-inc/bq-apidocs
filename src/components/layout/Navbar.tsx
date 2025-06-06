@@ -23,7 +23,7 @@ import {
 
 const menuItems = [
   { text: "Dashboard", icon: <DashboardIcon />, path: "/dashboard" },
-  { text: "API Playground", icon: <ApiIcon />, path: "/api-playground" },
+  { text: "API Playground", icon: <ApiIcon />, path: "/api" },
 ];
 
 const Navbar = () => {

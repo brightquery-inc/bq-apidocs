@@ -16,7 +16,7 @@ const App: React.FC = () => {
                 <Route path="/" element={<Layout />}>
                     <Route index element={<Navigate to="/dashboard" replace />} />
                     <Route path="dashboard" element={<Dashboard />} />
-                    <Route path="api-playground" element={<ApiPlayground />} />
+                    <Route path="api" element={<ApiPlayground />} />
                 </Route>
             </Routes>
         </Router>
